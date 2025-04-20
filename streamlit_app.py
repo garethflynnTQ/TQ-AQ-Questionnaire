@@ -153,13 +153,15 @@ if "answers" not in st.session_state:
 # --- Display Questions ---
 for i, q in enumerate(questions):
     st.markdown(f"<h3 style='color: {tq_rich_blue}; font-family: {primary_font};'>{q['question']}</h3>", unsafe_allow_html=True)
-    for option_key, option in q["options"].items():
-        st.radio(
-            f"  {option_key}. {option['text']}",  # Add spacing here
-            option_key,
-            key=f"q{i}_{option_key}",
-            index=None,
-        )
+    selected_option = st.radio(
+        "",  # Empty label for the radio group
+        list(q["options"].keys()), # Pass the option keys to st.radio
+        key=f"q{i}", # Unique key for each question
+        index=None, # Initialize with no default selection
+        format_func=lambda option_key: f"{option_key}. {q['options'][option_key]['text']}" # Format the display
+    )
+    if selected_option:
+        st.session_state.answers[f"q{i}"] = q["options"][selected_option]["score"]
 
 # --- Calculate Score ---
 def calculate_score():
