@@ -160,7 +160,7 @@ for i, q in enumerate(questions):
         index=None, # Initialize with no default selection
         format_func=lambda option_key: f"{option_key}. {q['options'][option_key]['text']}" # Format the display
     )
-    if selected_option:
+    if selected_option is not None:  # Check if an option has been selected
         st.session_state[f"q{i}"] = q["options"][selected_option]["score"]
 
 # --- Calculate Score ---
