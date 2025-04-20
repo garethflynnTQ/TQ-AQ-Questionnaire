@@ -1,0 +1,68 @@
+```css
+/* General Styles */
+body {
+    font-family: Calibri, sans-serif; /* Fallback for Open Sans */
+    background-color: #ffffff;
+    color: #333333;
+}
+
+.stApp {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Heading Styles */
+h1 {
+    color: #244092;
+    font-family: Arial Black, sans-serif; /* Fallback for Source Sans Pro */
+}
+
+h3 {
+    color: #244092;
+    font-family: Arial Black, sans-serif; /* Fallback for Source Sans Pro */
+    margin-top: 20px;
+}
+
+/* Radio Button Styles */
+.stRadio label {
+    font-size: 16px;
+    margin-left: 5px;
+    font-family: Calibri, sans-serif;  /* Fallback for Open Sans */
+}
+
+.stRadio div[data-baseweb="radio"] {
+    margin-bottom: 10px;
+}
+
+/* Button Styles */
+.stButton > button {
+    background-color: #244092;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: Arial Bold, sans-serif; /* Fallback for Ubuntu Bold */
+}
+
+.stButton > button:hover {
+    background-color: #3360c9;  /* Hover state from guidelines */
+}
+
+/* Feedback Box */
+div[style*="background-color: #f5f5f7;"] { /* Targeting the feedback boxes */
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+```
+4.  Run the Streamlit App
+
+* Open your terminal or command prompt.
+* Navigate to the directory where you saved `aq_questionnaire.py` and `style.css`.
+* Run the Streamlit app:
+
+    ```bash
+    streamlit run aq_questionnaire.py
+    ```
