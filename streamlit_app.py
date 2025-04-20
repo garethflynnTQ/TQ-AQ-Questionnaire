@@ -161,15 +161,14 @@ for i, q in enumerate(questions):
         format_func=lambda option_key: f"{option_key}. {q['options'][option_key]['text']}" # Format the display
     )
     if selected_option:
-        st.session_state.answers[f"q{i}"] = q["options"][selected_option]["score"]
+        st.session_state[f"q{i}"] = q["options"][selected_option]["score"]
 
 # --- Calculate Score ---
 def calculate_score():
     total_score = 0
-    for i, q in enumerate(questions):
-        for option_key, option in q["options"].items():
-            if st.session_state.get(f"q{i}_{option_key}") == option_key:
-                total_score += option["score"]
+    for key in st.session_state.keys():
+        if key.startswith("q"):  # Only consider keys that start with "q"
+            total_score += st.session_state[key]
     return total_score
 
 # --- Provide Feedback ---
