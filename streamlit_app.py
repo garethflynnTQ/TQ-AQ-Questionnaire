@@ -146,9 +146,10 @@ questions = [
     },
 ]
 
-# --- State Management ---
-if "answers" not in st.session_state:
-    st.session_state.answers = {}
+# --- Initialize answers in session state ---
+if "question_answers" not in st.session_state:
+    st.session_state.question_answers = {f"q{i}": None for i in range(len(questions))}
+
 
 # --- Display Questions ---
 for i, q in enumerate(questions):
@@ -157,19 +158,21 @@ for i, q in enumerate(questions):
         "",  # Empty label for the radio group
         list(q["options"].keys()), # Pass the option keys to st.radio
         key=f"q{i}", # Unique key for each question
-        index=None, # Initialize with no default selection
+        index=list(q["options"].keys()).index(st.session_state.question_answers[f"q{i}"]) if st.session_state.question_answers[f"q{i}"] else None,
         format_func=lambda option_key: f"{option_key}. {q['options'][option_key]['text']}" # Format the display
     )
-    if selected_option is not None:  # Check if an option has been selected
-        st.session_state[f"q{i}"] = q["options"][selected_option]["score"]
+    st.session_state.question_answers[f"q{i}"] = selected_option
+
 
 # --- Calculate Score ---
 def calculate_score():
     total_score = 0
-    for key in st.session_state.keys():
-        if key.startswith("q"):  # Only consider keys that start with "q"
-            total_score += st.session_state[key]
+    for i, q in enumerate(questions):
+        selected_option = st.session_state.question_answers[f"q{i}"]
+        if selected_option:
+            total_score += questions[i]["options"][selected_option]["score"]
     return total_score
+
 
 # --- Provide Feedback ---
 def provide_feedback(total_score):
@@ -184,10 +187,8 @@ def provide_feedback(total_score):
     else:
         st.markdown(f"<div style='background-color: {tq_light_grey}; padding: 10px; border-radius: 5px; font-family: {tertiary_font};'><b>AQ-High:</b> Your adaptability is high! You demonstrate a strong ability to thrive in changing circumstances. Maintain your open-mindedness and continue to seek out challenges that will further enhance your adaptability.</div>", unsafe_allow_html=True)
 
+
 # --- Submit Button ---
 if st.button("Submit"):
-    if len(st.session_state.answers) < len(questions):
-        st.warning("Please answer all questions before submitting.")
-    else:
-        total_score = calculate_score()
-        provide_feedback(total_score)
+    total_score = calculate_score()
+    provide_feedback(total_score)
